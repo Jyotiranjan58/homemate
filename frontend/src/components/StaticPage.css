@@ -1,0 +1,53 @@
+/* src/components/StaticPage.css */
+.static-page-container {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+}
+
+.static-page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.static-page-header h1 {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+}
+
+.static-page-header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.static-page-content {
+    background: var(--surface);
+    padding: 3rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #f1f5f9;
+    line-height: 1.8;
+    color: var(--text-muted);
+    font-size: 1.05rem;
+}
+
+.static-page-content h2 {
+    color: var(--text-main);
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.static-page-content p {
+    margin-bottom: 1.5rem;
+}
+
+.static-page-content ul {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}

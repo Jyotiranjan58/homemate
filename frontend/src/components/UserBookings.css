@@ -1,0 +1,122 @@
+.user-bookings-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+.booking-ticket {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border: 1px solid #f1f5f9;
+    transition: transform 0.2s;
+}
+
+.booking-ticket:hover {
+    transform: translateX(5px);
+    border-left: 4px solid var(--accent-blue);
+}
+
+.status-badge {
+    font-size: 0.75rem;
+    padding: 0.3rem 1rem;
+    border-radius: 100px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background-color: #fef3c7;
+    color: var(--accent-orange);
+}
+
+.status-accepted {
+    background-color: #dbeafe;
+    color: var(--accent-blue);
+}
+
+.status-completed {
+    background-color: #d1fae5;
+    color: var(--accent-green);
+}
+
+.provider-info {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--accent-green);
+}
+
+/* --- REVIEW SYSTEM CSS --- */
+.review-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #e2e8f0;
+    width: 100%;
+}
+
+.review-box {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    margin-top: 0.5rem;
+}
+
+.star-rating {
+    display: flex;
+    gap: 0.2rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.star {
+    color: #cbd5e1;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.star.active {
+    color: #fbbf24;
+    /* Gold */
+}
+
+.review-input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #cbd5e1;
+    border-radius: var(--radius-sm);
+    margin-bottom: 0.5rem;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.btn-review {
+    background-color: var(--accent-blue);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.9rem;
+}
+
+.btn-review:hover {
+    background-color: var(--accent-blue-hover);
+}
+
+.display-review {
+    background: #fefce8;
+    border-left: 3px solid #f59e0b;
+    padding: 1rem;
+    border-radius: var(--radius-sm);
+    margin-top: 1rem;
+    width: 100%;
+}
