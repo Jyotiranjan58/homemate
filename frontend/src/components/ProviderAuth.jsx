@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import './ProviderAuth.css';
-import './AuthModal.css'; // Reusing standard form classes
+import './AuthModal.css'; 
 
 const AVAILABLE_SERVICES = ['Electrician', 'Plumber', 'Carpenter', 'Cleaning', 'Painting', 'AC Repair'];
 
@@ -40,7 +40,7 @@ const ProviderAuth = () => {
         if (isLogin) {
             const res = await login(formData.email, formData.password, 'provider');
             if (res.success) {
-                navigate('/'); // Or navigate to a specific Provider Dashboard route later
+                navigate('/'); 
             } else {
                 setError(res.message);
             }
@@ -54,7 +54,7 @@ const ProviderAuth = () => {
             const res = await signup(formData, 'provider');
             if (res.success) {
                 setSuccessMsg('Application submitted! Please wait for Admin approval before logging in.');
-                setIsLogin(true); // Switch to login view
+                setIsLogin(true); 
             } else {
                 setError(res.message);
             }
