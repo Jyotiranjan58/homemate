@@ -52,14 +52,13 @@ const UserBookings = () => {
                 setReviewingId(null);
                 setRating(0);
                 setReviewText('');
-                fetchMyBookings(); // Refresh the list to show the new review
+                fetchMyBookings(); 
             }
         } catch (error) {
             alert("Error submitting review.");
         }
     };
 
-    // Helper to render static gold stars for existing reviews
     const renderStars = (count) => {
         return [...Array(5)].map((_, i) => (
             <span key={i} style={{ color: i < count ? '#fbbf24' : '#cbd5e1', fontSize: '1.2rem' }}>★</span>
@@ -111,7 +110,6 @@ const UserBookings = () => {
 
                             {/* --- REVIEW LOGIC --- */}
 
-                            {/* 1. Job is completed, but NO review exists yet -> Show "Leave Review" UI */}
                             {booking.status === 'Completed' && !booking.rating && (
                                 <div className="review-section">
                                     {reviewingId === booking._id ? (
