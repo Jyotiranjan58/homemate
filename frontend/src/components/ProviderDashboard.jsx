@@ -5,8 +5,8 @@ import './ProviderDashboard.css';
 const ProviderDashboard = () => {
     const { user } = useAuth();
     const [availableJobs, setAvailableJobs] = useState([]);
-    const [myJobs, setMyJobs] = useState([]); // Holds both Accepted and Completed jobs
-    const [activeTab, setActiveTab] = useState('available'); // available, active, completed
+    const [myJobs, setMyJobs] = useState([]); 
+    const [activeTab, setActiveTab] = useState('available'); 
     const [loading, setLoading] = useState(true);
 
     const fetchData = async () => {
@@ -36,7 +36,6 @@ const ProviderDashboard = () => {
 
     useEffect(() => {
         fetchData();
-        // Poll for new requests every 15 seconds
         const interval = setInterval(fetchData, 15000);
         return () => clearInterval(interval);
     }, [user]);
@@ -50,8 +49,8 @@ const ProviderDashboard = () => {
                 body: JSON.stringify({ providerEmail: user.email, providerName: user.name })
             });
             if (res.ok) {
-                fetchData(); // Refresh all data to move job from Available to Active
-                setActiveTab('active'); // Auto-switch to active tab
+                fetchData(); 
+                setActiveTab('active'); 
             }
         } catch (error) {
             alert("Error accepting job.");
@@ -63,7 +62,7 @@ const ProviderDashboard = () => {
         try {
             const res = await fetch(`http://localhost:5000/api/bookings/${jobId}/complete`, { method: 'PUT' });
             if (res.ok) {
-                fetchData(); // Refresh data to update revenue
+                fetchData();
             }
         } catch (error) {
             alert("Error completing job.");
