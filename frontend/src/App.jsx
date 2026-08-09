@@ -31,16 +31,13 @@ function App() {
       {/* Added flex layout to push footer to the bottom */}
       <div style={{ fontFamily: 'system-ui, sans-serif', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
 
-        {/* === PREMIUM NAVIGATION BAR === */}
+        
         <nav className="premium-nav">
           <Link to="/" className="nav-brand" onClick={closeMenu}>Homemate</Link>
-
-          {/* Hamburger Button (Visible only on mobile via CSS) */}
           <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
             ☰
           </button>
 
-          {/* Nav Links (Toggles class on mobile) */}
           <div className={`nav-links ${isMobileMenuOpen ? 'mobile-active' : ''}`}>
             {!isAuthenticated && (
               <Link to="/partner" onClick={closeMenu} style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: '500' }}>
@@ -56,7 +53,6 @@ function App() {
                   </Link>
                 )}
 
-                {/* Profile Link (For Everyone) */}
                 <Link to="/profile" onClick={closeMenu} style={{ color: 'var(--text-main)', textDecoration: 'none', fontWeight: '600' }}>
                   Settings
                 </Link>
@@ -81,7 +77,6 @@ function App() {
         <UserAuthModal isOpen={isUserModalOpen} onClose={() => setIsUserModalOpen(false)} />
 
         {/* === PAGE ROUTES === */}
-        {/* main flexGrow ensures this section stretches, pushing the footer down */}
         <main style={{ flexGrow: 1 }}>
           <Routes>
             {/* Public Routes (Anyone can see these) */}
@@ -121,7 +116,6 @@ function App() {
           </Routes>
         </main>
 
-        {/* === THE NEW FOOTER === */}
         <Footer />
 
       </div>
