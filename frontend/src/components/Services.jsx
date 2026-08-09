@@ -3,7 +3,6 @@ import { useAuth } from '../context/AuthContext';
 import UserAuthModal from './UserAuthModal';
 import './Services.css';
 
-// Added 'category' to each service for the filter functionality
 const SERVICES_DATA = [
     {
         id: 's1', title: 'Electrician', category: 'Repairs',
@@ -37,7 +36,7 @@ const SERVICES_DATA = [
     }
 ];
 
-// Automatically generate the list of unique categories
+
 const CATEGORIES = ['All', ...new Set(SERVICES_DATA.map(s => s.category))];
 
 const Services = () => {
