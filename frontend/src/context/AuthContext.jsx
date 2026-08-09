@@ -11,14 +11,14 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null); // Holds either User or Provider data
+    const [user, setUser] = useState(null); 
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
     const API_URL = 'http://localhost:5000/api/auth';
 
     useEffect(() => {
-        // Load session on startup
+        
         const storedUser = localStorage.getItem('homemate_session');
         if (storedUser) {
             try {
