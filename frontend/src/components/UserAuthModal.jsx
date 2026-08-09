@@ -21,7 +21,7 @@ const UserAuthModal = ({ isOpen, onClose }) => {
         setError('');
         setLoading(true);
 
-        // Notice the 'user' parameter passed to our context functions!
+        
         if (isLogin) {
             const res = await login(formData.email, formData.password, 'user');
             if (res.success) {
@@ -32,7 +32,7 @@ const UserAuthModal = ({ isOpen, onClose }) => {
         } else {
             const res = await signup(formData, 'user');
             if (res.success) {
-                setIsLogin(true); // Switch to login view after successful signup
+                setIsLogin(true); 
                 setError('Signup successful! Please log in.');
             } else {
                 setError(res.message);
