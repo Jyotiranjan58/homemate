@@ -5,10 +5,9 @@ import './Profile.css';
 const AVAILABLE_SERVICES = ['Electrician', 'Plumber', 'Carpenter', 'Cleaning', 'Painting', 'AC Repair'];
 
 const Profile = () => {
-    const { user, login } = useAuth(); // We'll use the login context to update the UI later
+    const { user, login } = useAuth();
     const [loading, setLoading] = useState(false);
 
-    // Pre-fill the form with the current user's data
     const [formData, setFormData] = useState({
         name: user?.name || '',
         mobile: user?.mobile || '',
@@ -46,9 +45,9 @@ const Profile = () => {
 
             if (data.success) {
                 alert("Profile updated successfully!");
-                // Update the local storage so the new name/data persists on refresh
+                
                 localStorage.setItem('homemate_session', JSON.stringify(data.user));
-                window.location.reload(); // Quick refresh to update the Navbar state
+                window.location.reload();
             } else {
                 alert(data.message);
             }
