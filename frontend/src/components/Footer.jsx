@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import './Footer.css';
 
 const Footer = () => {
-    // Helper function to scroll to top when a footer link is clicked
     const scrollToTop = () => {
         window.scrollTo(0, 0);
     };
@@ -39,7 +38,6 @@ const Footer = () => {
                 <div className="footer-column">
                     <h4>Contact Us</h4>
                     <ul className="footer-links">
-                        {/* Native HTML links for email and phone functionality */}
                         <li><a href="mailto:help@homemate.com">Support: help@homemate.com</a></li>
                         <li><a href="mailto:pros@homemate.com">Partners: pros@homemate.com</a></li>
                         <li><a href="tel:18001234567">Phone: 1800-123-4567</a></li>
