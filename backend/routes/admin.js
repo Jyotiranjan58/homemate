@@ -6,7 +6,6 @@ const router = express.Router();
 // 1. GET ALL PENDING PROVIDERS
 router.get('/providers/pending', async (req, res) => {
     try {
-        // Find all providers where status is 'Pending Review', exclude their passwords from the result
         const pendingProviders = await Provider.find({ status: 'Pending Review' }).select('-password');
         res.status(200).json(pendingProviders);
     } catch (err) {
@@ -17,7 +16,7 @@ router.get('/providers/pending', async (req, res) => {
 // 2. APPROVE OR REJECT A PROVIDER
 router.put('/providers/:id/status', async (req, res) => {
     try {
-        const { status } = req.body; // 'Approved' or 'Rejected'
+        const { status } = req.body; 
 
         const updatedProvider = await Provider.findByIdAndUpdate(
             req.params.id,
