@@ -6,9 +6,9 @@ const providerSchema = new mongoose.Schema({
     mobile: { type: String, required: true, minlength: 10, maxlength: 10 },
     password: { type: String, required: true },
     city: { type: String, required: true },
-    providedServices: [{ type: String, required: true }], // e.g., ['Electrician', 'Plumber']
+    providedServices: [{ type: String, required: true }], 
     status: { type: String, enum: ['Pending Review', 'Approved', 'Rejected'], default: 'Pending Review' },
-    role: { type: String, default: 'provider' } // Strict role
+    role: { type: String, default: 'provider' } 
 }, { timestamps: true });
 
 module.exports = mongoose.model('Provider', providerSchema);
