@@ -5,9 +5,7 @@ const Provider = require('../models/Provider');
 
 const router = express.Router();
 
-// ==========================================
-// 1. USER AUTHENTICATION
-// ==========================================
+//user authentication
 router.post('/user/signup', async (req, res) => {
     try {
         const { name, email, mobile, password } = req.body;
@@ -43,9 +41,7 @@ router.post('/user/login', async (req, res) => {
     }
 });
 
-// ==========================================
-// 2. PROVIDER AUTHENTICATION
-// ==========================================
+//provider authentication
 router.post('/provider/signup', async (req, res) => {
     try {
         const { name, email, mobile, password, city, providedServices } = req.body;
@@ -86,10 +82,7 @@ router.post('/provider/login', async (req, res) => {
     }
 });
 
-// ==========================================
-// 3. PROFILE UPDATE ROUTES
-// ==========================================
-
+//profile updates
 // Update Customer Profile
 router.put('/user/:email/update', async (req, res) => {
     try {
