@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true, lowercase: true },
     mobile: { type: String, required: true, minlength: 10, maxlength: 10 },
     password: { type: String, required: true },
-    role: { type: String, default: 'user' } // Strict role
+    role: { type: String, default: 'user' } 
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
