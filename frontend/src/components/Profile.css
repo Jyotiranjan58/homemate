@@ -99,7 +99,6 @@
     background-color: var(--accent-blue-hover);
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 600px) {
     .form-row {
         grid-template-columns: 1fr;
