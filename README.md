@@ -1,4 +1,4 @@
-# Homemate 🏡
+# Homemate
 
 Homemate is a full-stack, two-sided marketplace built on the MERN stack. It connects homeowners with trusted, vetted home service professionals (like electricians, plumbers, and cleaners) for a seamless booking experience.
 
