@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    // SIGNUP FUNCTION (Handles both User and Provider)
+    // Signup Function (Handles both User and Provider)
     const signup = async (formData, type) => {
         // 'type' must be exactly 'user' or 'provider'
         try {
