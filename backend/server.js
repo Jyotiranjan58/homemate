@@ -27,4 +27,4 @@ mongoose
       console.log(`🚀 Server running on http://localhost:${PORT}`),
     );
   })
-  .catch((err) => console.error("❌ MongoDB Error:", err));
+  .catch((err) => console.error("MongoDB Connection Error:", err));
