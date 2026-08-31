@@ -13,7 +13,7 @@ import UserBookings from './components/UserBookings';
 import Profile from './components/Profile';
 import Footer from './components/Footer';
 
-// New Static Pages
+// Static Pages
 import About from './components/About';
 import Terms from './components/Terms';
 import Privacy from './components/Privacy';
@@ -28,7 +28,6 @@ function App() {
 
   return (
     <Router>
-      {/* Added flex layout to push footer to the bottom */}
       <div style={{ fontFamily: 'system-ui, sans-serif', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
 
         
@@ -88,7 +87,7 @@ function App() {
 
             <Route path="/partner" element={<ProviderAuth />} />
 
-            {/* --- NEW STATIC PAGES --- */}
+            {/* NEW STATIC PAGES */}
             <Route path="/about" element={<About />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy" element={<Privacy />} />
