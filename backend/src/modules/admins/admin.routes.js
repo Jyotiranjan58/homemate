@@ -1,10 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-const Provider = require("../models/Provider");
+const Provider = require("../providers/provider.model");
 
-const authenticateToken = require("../middleware/auth.middleware");
-const authorizeRoles = require("../middleware/role.middleware");
+const authenticateToken = require("../../middleware/auth.middleware");
+const authorizeRoles = require("../../middleware/role.middleware");
 
 const router = express.Router();
 
