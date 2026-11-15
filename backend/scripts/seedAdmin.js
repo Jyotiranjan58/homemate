@@ -6,8 +6,7 @@ require("dotenv").config({
   path: path.resolve(__dirname, "../.env"),
 });
 
-const Admin = require("../models/Admin");
-
+const Admin = require("../src/modules/admins/admin.model");
 const seedAdmin = async () => {
   try {
     const { MONGO_URI, ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
