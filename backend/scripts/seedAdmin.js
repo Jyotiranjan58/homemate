@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const path = require("path");
+const { ROLES } = require("../src/constants/app.constants");
 
 require("dotenv").config({
   path: path.resolve(__dirname, "../.env"),
@@ -39,7 +40,7 @@ const seedAdmin = async () => {
       name: ADMIN_NAME.trim(),
       email: normalizedEmail,
       password: hashedPassword,
-      role: "admin",
+      role: ROLES.ADMIN,
     });
 
     console.log("Admin account created successfully.");

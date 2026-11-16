@@ -1,6 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 
+const notFound = require("./middleware/notFound.middleware");
+const errorHandler = require("./middleware/error.middleware");
+
 const app = express();
 
 app.use(
@@ -17,5 +20,8 @@ app.use("/api/auth", require("./modules/users/user.routes"));
 app.use("/api/auth", require("./modules/providers/provider.routes"));
 app.use("/api/admin", require("./modules/admins/admin.routes"));
 app.use("/api/bookings", require("./modules/bookings/booking.routes"));
+
+app.use(notFound);
+app.use(errorHandler);
 
 module.exports = app;

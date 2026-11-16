@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Provider = require("../providers/provider.model");
+const { PROVIDER_STATUS } = require("../../constants/app.constants");
 
 // Helper for creating errors
 const createAdminError = (message, statusCode) => {
@@ -11,7 +12,7 @@ const createAdminError = (message, statusCode) => {
 // GET ALL PENDING PROVIDERS
 const getPendingProviders = async () => {
   const pendingProviders = await Provider.find({
-    status: "Pending Review",
+    status: PROVIDER_STATUS.PENDING_REVIEW,
   })
     .select("-password")
     .sort({ createdAt: -1 });
@@ -21,7 +22,7 @@ const getPendingProviders = async () => {
 
 const updateProviderStatus = async (providerId, status) => {
   // Validate status
-  if (!["Approved", "Rejected"].includes(status)) {
+  if (![PROVIDER_STATUS.APPROVED, PROVIDER_STATUS.REJECTED].includes(status)) {
     throw createAdminError("Status must be either Approved or Rejected.", 400);
   }
 
@@ -33,7 +34,7 @@ const updateProviderStatus = async (providerId, status) => {
   const updatedProvider = await Provider.findOneAndUpdate(
     {
       _id: providerId,
-      status: "Pending Review",
+      status: PROVIDER_STATUS.PENDING_REVIEW,
     },
     {
       $set: { status },

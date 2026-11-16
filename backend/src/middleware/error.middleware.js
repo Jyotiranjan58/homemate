@@ -4,8 +4,13 @@ const errorHandler = (err, req, res, next) => {
     return next(err);
   }
 
-  let statusCode = err.statusCode || err.status || 500;
+  let statusCode = Number(err.statusCode || err.status || 500);
   let message = err.message || "Internal Server Error";
+
+  // Make sure the status code is a valid client/server error code.
+  if (!Number.isInteger(statusCode) || statusCode < 400 || statusCode > 599) {
+    statusCode = 500;
+  }
 
   // Mongoose validation errors
   if (err.name === "ValidationError") {
@@ -31,7 +36,7 @@ const errorHandler = (err, req, res, next) => {
     message = "Invalid JSON request body.";
   }
 
-  // Log unexpected server errors
+  // Hide internal error details from clients.
   if (statusCode >= 500) {
     console.error("Server Error:", err);
     message = "Internal Server Error";

@@ -12,17 +12,17 @@ const {
 
 const authenticateToken = require("../../middleware/auth.middleware");
 const authorizeRoles = require("../../middleware/role.middleware");
+const { ROLES } = require("../../constants/app.constants");
 
 const router = express.Router();
 
 //CREATE A NEW BOOKING (CUSTOMER)
-router.post("/", authenticateToken, authorizeRoles("user"), createBooking);
+router.post("/", authenticateToken, authorizeRoles(ROLES.USER), createBooking);
 
-//GET CUSTOMER BOOKINGS
 router.get(
   "/user/:email",
   authenticateToken,
-  authorizeRoles("user"),
+  authorizeRoles(ROLES.USER),
   getUserBookings,
 );
 
@@ -30,7 +30,7 @@ router.get(
 router.post(
   "/available",
   authenticateToken,
-  authorizeRoles("provider"),
+  authorizeRoles(ROLES.PROVIDER),
   getAvailableJobs,
 );
 
@@ -38,7 +38,7 @@ router.post(
 router.put(
   "/:id/accept",
   authenticateToken,
-  authorizeRoles("provider"),
+  authorizeRoles(ROLES.PROVIDER),
   acceptBooking,
 );
 
@@ -46,7 +46,7 @@ router.put(
 router.get(
   "/provider/:email",
   authenticateToken,
-  authorizeRoles("provider"),
+  authorizeRoles(ROLES.PROVIDER),
   getProviderBookings,
 );
 
@@ -54,7 +54,7 @@ router.get(
 router.put(
   "/:id/complete",
   authenticateToken,
-  authorizeRoles("provider"),
+  authorizeRoles(ROLES.PROVIDER),
   completeBooking,
 );
 
@@ -62,7 +62,7 @@ router.put(
 router.put(
   "/:id/review",
   authenticateToken,
-  authorizeRoles("user"),
+  authorizeRoles(ROLES.USER),
   submitReview,
 );
 

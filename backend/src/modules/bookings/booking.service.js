@@ -4,6 +4,11 @@ const Booking = require("./booking.model");
 const User = require("../users/user.model");
 const Provider = require("../providers/provider.model");
 
+const {
+  PROVIDER_STATUS,
+  BOOKING_STATUS,
+} = require("../../constants/app.constants");
+
 // CREATE CUSTOM ERROR
 const createBookingError = (message, statusCode) => {
   const error = new Error(message);
@@ -39,7 +44,7 @@ const getAuthenticatedProvider = async (providerId) => {
     throw createBookingError("Provider account not found.", 404);
   }
 
-  if (provider.status !== "Approved") {
+  if (provider.status !== PROVIDER_STATUS.APPROVED) {
     throw createBookingError("Your provider account is not approved.", 403);
   }
 
@@ -125,7 +130,7 @@ const getAvailableJobs = async (providerId) => {
     serviceName: {
       $in: provider.providedServices,
     },
-    status: "Pending",
+    status: BOOKING_STATUS.PENDING,
   }).sort({
     createdAt: -1,
   });
@@ -146,14 +151,14 @@ const acceptBooking = async (providerId, bookingId) => {
   const updatedBooking = await Booking.findOneAndUpdate(
     {
       _id: bookingId,
-      status: "Pending",
+      status: BOOKING_STATUS.PENDING,
       serviceName: {
         $in: provider.providedServices,
       },
     },
     {
       $set: {
-        status: "Accepted",
+        status: BOOKING_STATUS.ACCEPTED,
         providerEmail: provider.email,
         providerName: provider.name,
       },
@@ -175,7 +180,7 @@ const acceptBooking = async (providerId, bookingId) => {
     throw createBookingError("Booking not found.", 404);
   }
 
-  if (existingBooking.status !== "Pending") {
+  if (existingBooking.status !== BOOKING_STATUS.PENDING) {
     throw createBookingError("This booking is no longer available.", 409);
   }
 
@@ -222,11 +227,11 @@ const completeBooking = async (providerId, bookingId) => {
     {
       _id: bookingId,
       providerEmail: provider.email,
-      status: "Accepted",
+      status: BOOKING_STATUS.ACCEPTED,
     },
     {
       $set: {
-        status: "Completed",
+        status: BOOKING_STATUS.COMPLETED,
       },
     },
     {
@@ -295,7 +300,7 @@ const submitReview = async (userId, bookingId, reviewData = {}) => {
     {
       _id: bookingId,
       userEmail: user.email,
-      status: "Completed",
+      status: BOOKING_STATUS.COMPLETED,
       rating: null,
       review: null,
     },
@@ -329,7 +334,7 @@ const submitReview = async (userId, bookingId, reviewData = {}) => {
     );
   }
 
-  if (existingBooking.status !== "Completed") {
+  if (existingBooking.status !== BOOKING_STATUS.COMPLETED) {
     throw createBookingError("Only completed bookings can be reviewed.", 409);
   }
 
