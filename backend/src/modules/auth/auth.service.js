@@ -4,12 +4,21 @@ const Admin = require("../admins/admin.model");
 const User = require("../users/user.model");
 const Provider = require("../providers/provider.model");
 const generateAuthToken = require("../../utils/generateAuthToken");
+const { ROLES, PROVIDER_STATUS } = require("../../constants/app.constants");
 
 // Helper for authentication errors
 const createAuthError = (message, statusCode) => {
   const error = new Error(message);
   error.statusCode = statusCode;
   return error;
+};
+
+const isValidEmail = (email) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
+const isValidIndianMobile = (mobile) => {
+  return /^[6-9]\d{9}$/.test(mobile);
 };
 
 // ADMIN LOGIN SERVICE
@@ -58,22 +67,58 @@ const loginAdmin = async (credentials = {}) => {
 const signupUser = async (userData = {}) => {
   const { name, email, mobile, password } = userData;
 
-  if (!name || !email || !mobile || !password) {
+  // Check required fields and their data types
+  if (
+    typeof name !== "string" ||
+    !name.trim() ||
+    typeof email !== "string" ||
+    !email.trim() ||
+    (typeof mobile !== "string" && typeof mobile !== "number") ||
+    typeof password !== "string" ||
+    !password
+  ) {
     throw createAuthError("Please fill all required fields.", 400);
   }
 
-  const existingUser = await User.findOne({ email });
+  // Normalize values
+  const normalizedName = name.trim();
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedMobile = String(mobile).trim();
 
-  if (existingUser) {
-    throw createAuthError("Email already in use.", 400);
+  // Validate email
+  if (!isValidEmail(normalizedEmail)) {
+    throw createAuthError("Please enter a valid email address.", 400);
   }
 
+  // Validate Indian mobile number
+  if (!isValidIndianMobile(normalizedMobile)) {
+    throw createAuthError(
+      "Please enter a valid 10-digit Indian mobile number.",
+      400,
+    );
+  }
+
+  // Validate password length
+  if (password.length < 8) {
+    throw createAuthError("Password must contain at least 8 characters.", 400);
+  }
+
+  // Check whether the email already exists
+  const existingUser = await User.findOne({
+    email: normalizedEmail,
+  });
+
+  if (existingUser) {
+    throw createAuthError("Email already in use.", 409);
+  }
+
+  // Hash password before saving
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser = new User({
-    name,
-    email,
-    mobile,
+    name: normalizedName,
+    email: normalizedEmail,
+    mobile: normalizedMobile,
     password: hashedPassword,
   });
 
@@ -84,24 +129,43 @@ const signupUser = async (userData = {}) => {
 const loginUser = async (credentials = {}) => {
   const { email, password } = credentials;
 
-  if (!email || !password) {
+  // Validate input
+  if (
+    typeof email !== "string" ||
+    !email.trim() ||
+    typeof password !== "string" ||
+    !password
+  ) {
     throw createAuthError("Email and password are required.", 400);
   }
 
-  const user = await User.findOne({ email });
+  // Normalize email
+  const normalizedEmail = email.trim().toLowerCase();
+
+  if (!isValidEmail(normalizedEmail)) {
+    throw createAuthError("Please enter a valid email address.", 400);
+  }
+
+  // Explicitly retrieve password because the model hides it by default
+  const user = await User.findOne({
+    email: normalizedEmail,
+  }).select("+password");
 
   if (!user) {
     throw createAuthError("Invalid email or password.", 401);
   }
 
+  // Compare entered password with stored hash
   const isMatch = await bcrypt.compare(password, user.password);
 
   if (!isMatch) {
     throw createAuthError("Invalid email or password.", 401);
   }
 
-  const token = generateAuthToken(user._id, "user");
+  // Generate authentication token
+  const token = generateAuthToken(user._id, ROLES.USER);
 
+  // Remove password before returning user data
   const userData = user.toObject();
   delete userData.password;
 
@@ -132,15 +196,13 @@ const signupProvider = async (providerData = {}) => {
   }
   const normalizedEmail = email.trim().toLowerCase();
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!emailRegex.test(normalizedEmail)) {
+  if (!isValidEmail(normalizedEmail)) {
     throw createAuthError("Please enter a valid email address.", 400);
   }
 
   const normalizedMobile = String(mobile).trim();
 
-  if (!/^[6-9]\d{9}$/.test(normalizedMobile)) {
+  if (!isValidIndianMobile(normalizedMobile)) {
     throw createAuthError(
       "Please enter a valid 10-digit Indian mobile number.",
       400,
@@ -210,7 +272,7 @@ const loginProvider = async (credentials = {}) => {
 
   const provider = await Provider.findOne({
     email: normalizedEmail,
-  });
+  }).select("+password");
 
   if (!provider) {
     throw createAuthError("Invalid email or password.", 401);
@@ -222,11 +284,11 @@ const loginProvider = async (credentials = {}) => {
     throw createAuthError("Invalid email or password.", 401);
   }
 
-  if (provider.status !== "Approved") {
+  if (provider.status !== PROVIDER_STATUS.APPROVED) {
     throw createAuthError("Your account is not approved yet.", 403);
   }
 
-  const token = generateAuthToken(provider._id, "provider");
+  const token = generateAuthToken(provider._id, ROLES.PROVIDER);
 
   const providerData = provider.toObject();
   delete providerData.password;

@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { ROLES } = require("../constants/app.constants");
 
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -31,7 +32,7 @@ const authenticateToken = (req, res, next) => {
       algorithms: ["HS256"],
     });
 
-    const allowedRoles = ["user", "provider", "admin"];
+    const allowedRoles = Object.values(ROLES);
 
     if (
       !decoded ||
