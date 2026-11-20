@@ -1,5 +1,7 @@
 const express = require("express");
 
+const { rateLimit } = require("express-rate-limit");
+
 const {
   adminLogin,
   userSignup,
@@ -20,18 +22,49 @@ const {
 
 const router = express.Router();
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 10, // Maximum 10 requests per IP
+  standardHeaders: "draft-8",
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message:
+      "Too many authentication requests. Please try again after 15 minutes.",
+  },
+});
+
 // ADMIN LOGIN
-router.post("/admin/login", ...adminLoginValidator, validate, adminLogin);
+router.post(
+  "/admin/login",
+  authLimiter,
+  ...adminLoginValidator,
+  validate,
+  adminLogin,
+);
 
 // USER SIGNUP
-router.post("/user/signup", ...userSignupValidator, validate, userSignup);
+router.post(
+  "/user/signup",
+  authLimiter,
+  ...userSignupValidator,
+  validate,
+  userSignup,
+);
 
 // USER LOGIN
-router.post("/user/login", ...userLoginValidator, validate, userLogin);
+router.post(
+  "/user/login",
+  authLimiter,
+  ...userLoginValidator,
+  validate,
+  userLogin,
+);
 
 // PROVIDER SIGNUP
 router.post(
   "/provider/signup",
+  authLimiter,
   ...providerSignupValidator,
   validate,
   providerSignup,
@@ -40,6 +73,7 @@ router.post(
 // PROVIDER LOGIN
 router.post(
   "/provider/login",
+  authLimiter,
   ...providerLoginValidator,
   validate,
   providerLogin,

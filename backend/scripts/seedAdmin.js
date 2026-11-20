@@ -12,17 +12,27 @@ const seedAdmin = async () => {
   try {
     const { MONGO_URI, ADMIN_NAME, ADMIN_EMAIL, ADMIN_PASSWORD } = process.env;
 
-    if (!MONGO_URI || !ADMIN_NAME || !ADMIN_EMAIL || !ADMIN_PASSWORD) {
+    const mongoURI = MONGO_URI?.trim();
+    const normalizedName = ADMIN_NAME?.trim();
+    const normalizedEmail = ADMIN_EMAIL?.trim().toLowerCase();
+
+    if (!mongoURI || !normalizedName || !normalizedEmail || !ADMIN_PASSWORD) {
       throw new Error("Missing required admin environment variables.");
+    }
+
+    if (!/^mongodb(\+srv)?:\/\//i.test(mongoURI)) {
+      throw new Error("MONGO_URI must be a valid MongoDB connection string.");
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+      throw new Error("Please provide a valid admin email address.");
     }
 
     if (ADMIN_PASSWORD.length < 12) {
       throw new Error("Admin password must contain at least 12 characters.");
     }
 
-    const normalizedEmail = ADMIN_EMAIL.trim().toLowerCase();
-
-    await mongoose.connect(MONGO_URI);
+    await mongoose.connect(mongoURI);
     console.log("MongoDB Connected");
 
     const existingAdmin = await Admin.findOne({
@@ -37,7 +47,7 @@ const seedAdmin = async () => {
     const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 12);
 
     const admin = await Admin.create({
-      name: ADMIN_NAME.trim(),
+      name: normalizedName,
       email: normalizedEmail,
       password: hashedPassword,
       role: ROLES.ADMIN,
