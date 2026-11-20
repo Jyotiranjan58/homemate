@@ -3,15 +3,21 @@ const {
   updateProviderStatus: changeProviderStatus,
 } = require("./admin.service");
 
+const sendSuccessResponse = require("../../utils/sendSuccessResponse");
+
 // GET ALL PENDING PROVIDERS
 const getPendingProviders = async (req, res) => {
   const providers = await fetchPendingProviders();
 
-  return res.status(200).json({
-    success: true,
-    count: providers.length,
-    providers,
-  });
+  return sendSuccessResponse(
+    res,
+    200,
+    "Pending providers retrieved successfully.",
+    {
+      count: providers.length,
+      providers,
+    },
+  );
 };
 
 // APPROVE OR REJECT PROVIDER
@@ -20,11 +26,12 @@ const updateProviderStatus = async (req, res) => {
 
   const updatedProvider = await changeProviderStatus(req.params.id, status);
 
-  return res.status(200).json({
-    success: true,
-    message: `Provider successfully ${status.toLowerCase()}.`,
-    provider: updatedProvider,
-  });
+  return sendSuccessResponse(
+    res,
+    200,
+    `Provider successfully ${status.toLowerCase()}.`,
+    updatedProvider,
+  );
 };
 
 module.exports = {

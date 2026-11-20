@@ -6,58 +6,45 @@ const {
   loginProvider,
 } = require("./auth.service");
 
+const sendSuccessResponse = require("../../utils/sendSuccessResponse");
+
 // ADMIN LOGIN
 const adminLogin = async (req, res) => {
   const result = await loginAdmin(req.body);
 
-  return res.status(200).json({
-    success: true,
-    message: "Admin login successful.",
-    ...result,
-  });
+  return sendSuccessResponse(res, 200, "Admin login successful.", result);
 };
 
 // USER SIGNUP
 const userSignup = async (req, res) => {
   await signupUser(req.body);
 
-  return res.status(201).json({
-    success: true,
-    message: "User registered successfully.",
-  });
+  return sendSuccessResponse(res, 201, "User registered successfully.");
 };
 
 // USER LOGIN
 const userLogin = async (req, res) => {
   const result = await loginUser(req.body);
 
-  return res.status(200).json({
-    success: true,
-    message: "Login successful.",
-    ...result,
-  });
+  return sendSuccessResponse(res, 200, "Login successful.", result);
 };
 
 // PROVIDER SIGNUP
 const providerSignup = async (req, res) => {
   await signupProvider(req.body);
 
-  return res.status(201).json({
-    success: true,
-    message:
-      "Provider registration successful. Your application is pending admin approval.",
-  });
+  return sendSuccessResponse(
+    res,
+    201,
+    "Provider registration successful. Your application is pending admin approval.",
+  );
 };
 
 // PROVIDER LOGIN
 const providerLogin = async (req, res) => {
   const result = await loginProvider(req.body);
 
-  return res.status(200).json({
-    success: true,
-    message: "Login successful.",
-    ...result,
-  });
+  return sendSuccessResponse(res, 200, "Login successful.", result);
 };
 
 module.exports = {

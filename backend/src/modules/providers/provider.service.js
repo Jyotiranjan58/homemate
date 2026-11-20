@@ -11,7 +11,7 @@ const updateProviderProfile = async (providerId, profileData = {}) => {
   }
 
   if (mobile !== undefined) {
-    updates.mobile = mobile;
+    updates.mobile = String(mobile).trim();
   }
 
   if (city !== undefined) {
@@ -31,7 +31,9 @@ const updateProviderProfile = async (providerId, profileData = {}) => {
   }
 
   if (providedServices !== undefined) {
-    updates.providedServices = providedServices;
+    updates.providedServices = providedServices.map((service) =>
+      service.trim(),
+    );
   }
 
   if (Object.keys(updates).length === 0) {

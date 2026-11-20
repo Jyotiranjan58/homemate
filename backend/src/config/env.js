@@ -32,10 +32,31 @@ const validateEnv = () => {
     errors.push("PORT must be a number between 1 and 65535.");
   }
 
+  // Validate frontend URL
+  const frontendUrl =
+    process.env.FRONTEND_URL?.trim() || "http://localhost:5173";
+
+  try {
+    const parsedUrl = new URL(frontendUrl);
+
+    if (
+      !["http:", "https:"].includes(parsedUrl.protocol) ||
+      parsedUrl.origin !== frontendUrl
+    ) {
+      errors.push(
+        "FRONTEND_URL must be a valid origin, e.g. http://localhost:5173.",
+      );
+    }
+  } catch {
+    errors.push(
+      "FRONTEND_URL must be a valid origin, e.g. http://localhost:5173.",
+    );
+  }
+
   // Validate JWT expiration
   const jwtExpiresIn = process.env.JWT_EXPIRES_IN?.trim() || "1h";
 
-  if (!/^\d+(ms|s|m|h|d|w|y)?$/i.test(jwtExpiresIn)) {
+  if (!/^\d+(ms|s|m|h|d|w|y)$/i.test(jwtExpiresIn)) {
     errors.push(
       "JWT_EXPIRES_IN must be a valid duration such as 15m, 1h, or 7d.",
     );

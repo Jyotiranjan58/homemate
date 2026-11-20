@@ -12,7 +12,7 @@ const updateUserProfile = async (userId, profileData = {}) => {
   }
 
   if (mobile !== undefined) {
-    updates.mobile = mobile;
+    updates.mobile = String(mobile).trim();
   }
 
   if (Object.keys(updates).length === 0) {
