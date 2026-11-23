@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const sendSuccessResponse = require("../../utils/sendSuccessResponse");
 
-// CHECK SERVER AND DATABASE HEALTH
+// Server and Database Health Check
 const getHealth = (req, res) => {
   const isDatabaseConnected = mongoose.connection.readyState === 1;
 
