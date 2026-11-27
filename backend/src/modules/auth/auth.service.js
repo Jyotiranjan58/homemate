@@ -162,6 +162,14 @@ const loginUser = async (credentials = {}) => {
     throw createAuthError("Invalid email or password.", 401);
   }
 
+  // Prevent deactivated users from logging in
+  if (user.isActive === false) {
+    throw createAuthError(
+      "Your account has been deactivated. Please contact support.",
+      403,
+    );
+  }
+
   // Generate authentication token
   const token = generateAuthToken(user._id, ROLES.USER);
 

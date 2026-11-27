@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
 const { ROLES } = require("../constants/app.constants");
+const User = require("../modules/users/user.model");
 
-const authenticateToken = (req, res, next) => {
+const authenticateToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -27,31 +28,12 @@ const authenticateToken = (req, res, next) => {
     });
   }
 
+  let decoded;
+
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+    decoded = jwt.verify(token, process.env.JWT_SECRET, {
       algorithms: ["HS256"],
     });
-
-    const allowedRoles = Object.values(ROLES);
-
-    if (
-      !decoded ||
-      typeof decoded !== "object" ||
-      !decoded.id ||
-      !allowedRoles.includes(decoded.role)
-    ) {
-      return res.status(401).json({
-        success: false,
-        message: "Invalid authentication token.",
-      });
-    }
-
-    req.auth = {
-      id: decoded.id,
-      role: decoded.role,
-    };
-
-    next();
   } catch (error) {
     if (error.name === "TokenExpiredError") {
       return res.status(401).json({
@@ -65,6 +47,50 @@ const authenticateToken = (req, res, next) => {
       message: "Invalid or malformed authentication token.",
     });
   }
+
+  const allowedRoles = Object.values(ROLES);
+
+  if (
+    !decoded ||
+    typeof decoded !== "object" ||
+    !decoded.id ||
+    !allowedRoles.includes(decoded.role)
+  ) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid authentication token.",
+    });
+  }
+
+  // Check whether the user account is still active
+  if (decoded.role === ROLES.USER) {
+    try {
+      const user = await User.findById(decoded.id).select("isActive");
+
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: "User account not found.",
+        });
+      }
+
+      if (user.isActive === false) {
+        return res.status(403).json({
+          success: false,
+          message: "Your account has been deactivated.",
+        });
+      }
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  req.auth = {
+    id: decoded.id,
+    role: decoded.role,
+  };
+
+  return next();
 };
 
 module.exports = authenticateToken;
